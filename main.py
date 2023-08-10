@@ -35,6 +35,14 @@ black = pygame.Color(0,0,0)
 #for clock at the left corner
 gameClock = pygame.time.Clock()
 
+def checkCollision(pasA,As ,pasB ,Bs): #As is the size of a and bs is the size of b
+    if(pasA.x < pasB+Bs and pasA.x+As > pasB.x and pasA.y < pasB.y+Bs and pasA.y+As > pasB.y):
+        return True
+    return False
+
+def checkLimit(snake):
+    if(snake.x > SCREEN_WIDTH):
+        snake.x = SNAKE_SIZE
 #we will define keys
 def getKey():
     for event in pygame.event.get():
@@ -62,4 +70,35 @@ def getKey():
 def endGame():
     message = game_over_font.render("Game Over",1,pygame.Color("white"))
     message_play_again = play_again_font.render("Play Again ? (Y/N)",1,pygame.Color("green"))
-    
+    screen.blit(message,(320,240))
+    screen.blit(message_play_again,(320+12,240+40))
+
+    pygame.display.flip()
+    pygame.display.update()
+
+    mKey = getKey()
+    while(mKey != "exit"):
+        if(mKey == "yes"):
+            main()
+        elif(mKey == "no"):
+            break
+        mKey = getKey()
+        gameClock.tick(FPS)
+    sys.exit(0)
+
+def draawScore(score):
+    score_numb = score_numb_font.render(str(score),1,pygame.Color("red"))
+    screen.blit(score_msg,(SCREEN_WIDTH - score_msg_size[0]-60,10))
+    screen.blit(score_numb,(SCREEN_HEIGHT - 45,14)) 
+
+def drowGameTime(gameTime):
+    game_time = score_font.render("Time:", 1, pygame.Color("white"))
+    game_time_numb = score_numb_font.render(str(gameTime/1000),1,pygame.Color("white"))
+    screen.blit(game_time,(30,10))
+    screen.blit(game_time_numb,(105,14))
+
+def exitScreen():
+    pass
+
+def main():
+    score = 0 
